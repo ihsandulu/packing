@@ -142,10 +142,16 @@ class api extends BaseController
         header('Access-Control-Allow-Headers: Content-Type');
         // Ambil parameter GET dan gunakan sebagai kondisi WHERE
 
+        foreach ($this->request->getGet() as $e => $f) {
+            if ($e != 'create') {
+                $where[$e] = $this->request->getGet($e);
+            }
+        }
+
         $target = $this->db
             ->table("target")
             ->join("size", "size.size_id=target.size_id", "left")
-            ->where("target_po", $this->request->getGET("search"))
+            ->where($where)
             ->orderBy("target_po", "ASC")
             ->orderBy("target_upc", "ASC")
             ->get()
