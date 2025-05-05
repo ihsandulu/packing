@@ -185,48 +185,95 @@
                             </form>
                         </div>
                         <div class="alert alert-white">
-                            <form method="get">
-                                <div class="row">
+                            <div class="row">
+                                <div class="col-4 row mb-2">
+                                    <div class="col-3">
+                                        <label class="text-dark">Cari :</label>
+                                    </div>
+                                    <?php 
+                                    if(isset($_GET["po"])){
+                                        $filtern = "po"; 
+                                    }else if(isset($_GET["tgl"])){      
+                                        $filtern = "tgl"; 
+                                    }else{
+                                        $filtern = ""; 
+                                    }
+                                    ?>
+                                    <div class="col-9">
+                                        <select id="filtern" onchange="pilihfilter()" class="form-control">
+                                            <option value="tgl" <?=($filtern=="tgl")?"selected":"";?>>Tgl Export</option>
+                                            <option value="po" <?=($filtern=="po")?"selected":"";?>>PO Number</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <form method="get" class="col-8 row mb-2" id="tgl">
                                     <?php
                                     $dari = date("Y-m-d");
                                     $ke = date("Y-m-d");
-                                    $idepartemen = 0;
                                     if (isset($_GET["dari"])) {
                                         $dari = $_GET["dari"];
                                     }
                                     if (isset($_GET["ke"])) {
                                         $ke = $_GET["ke"];
                                     }
-                                    if (isset($_GET["departemen"])) {
-                                        $idepartemen = $_GET["departemen"];
-                                    }
                                     ?>
                                     <div class="col-4 row mb-2">
-                                        <div class="col-3">
+                                        <div class="col-4">
                                             <label class="text-dark">Dari :</label>
                                         </div>
-                                        <div class="col-9">
+                                        <div class="col-8">
                                             <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                                         </div>
                                     </div>
                                     <div class="col-4 row mb-2">
-                                        <div class="col-3">
+                                        <div class="col-4">
                                             <label class="text-dark">Ke :</label>
                                         </div>
-                                        <div class="col-9">
+                                        <div class="col-8">
                                             <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
                                         </div>
                                     </div>
                                     <div class="col-4 row mb-2">
-                                        <div class="col-3">
-                                            <label class="text-dark"></label>
-                                        </div>
-                                        <div class="col-9">
+                                        <div class="col-12">
                                             <button type="submit" class="btn btn-block btn-primary">Search</button>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                                <form method="get" class="col-8 row mb-2" id="po">
+                                    <?php
+                                    $ipo = "";
+                                    if (isset($_GET["po"])) {
+                                        $ipo = $_GET["po"];
+                                    }
+                                    ?>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-4">
+                                            <label class="text-dark">PO :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="text" class="form-control" placeholder="Isi nomor PO" name="po" value="<?= $ipo; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-4 row mb-2">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <script>
+                                    function pilihfilter() {
+                                        var filter = $("#filtern").val();
+                                        if (filter == "tgl") {
+                                            $("#tgl").show();
+                                            $("#po").hide();
+                                        } else {
+                                            $("#tgl").hide();
+                                            $("#po").show();
+                                        }
+                                    }
+                                    pilihfilter();
+                                </script>
+                            </div>
                         </div>
                         <div class="table-responsive m-t-1">
                             <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
@@ -248,12 +295,17 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $usr = $this->db
+                                    $build = $this->db
                                         ->table("target")
-                                        ->join("size", "size.size_id=target.size_id", "left")
-                                        ->where("target_date >=", $dari)
-                                        ->where("target_date <=", $ke)
-                                        ->orderBy("target_date DESC")
+                                        ->join("size", "size.size_id=target.size_id", "left");
+                                    if (isset($_GET["po"])) {
+                                        $build->where("target_po", $_GET["po"]);
+                                    }
+                                    if (isset($_GET["dari"]) && isset($_GET["ke"])) {
+                                        $build->where("target_date >=", $dari)
+                                        ->where("target_date <=", $ke);
+                                    }
+                                    $usr = $build->orderBy("target_date DESC")
                                         ->get();
                                     //echo $this->db->getLastquery();
                                     $no = 1;
