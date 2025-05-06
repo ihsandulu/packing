@@ -111,7 +111,7 @@ class api extends BaseController
                 $result = $query->getRow(); // hanya ambil satu baris (karena UPC biasanya unik)
                 $ctns = $result->target_ctns;
                 $target_scan = $result->target_scan + 1;
-                if ($target_scan >= $ctns) {
+                if ($target_scan > $ctns) {
                     $status = "-1";
                     $message = "Warning! Melebihi CTNS!";
                 } else {
