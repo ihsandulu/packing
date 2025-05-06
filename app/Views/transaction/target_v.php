@@ -14,6 +14,11 @@
                         <div class="<?= $coltitle; ?>">
                             <h4 class="card-title"></h4>
                         </div>
+                        <div class="col-2 ">
+                            <a href="<?= base_url("apk/100.apk"); ?>" class="btn btn-success btn-xs btn-block float-right">
+                                <i class="fa fa-download"></i> Download APK
+                            </a>
+                        </div>
 
                         <?php if (!isset($_POST['new']) && !isset($_POST['edit']) && !isset($_GET['report'])) { ?>
                             <?php if (isset($_GET["user_id"])) { ?>
@@ -190,19 +195,19 @@
                                     <div class="col-3">
                                         <label class="text-dark">Cari :</label>
                                     </div>
-                                    <?php 
-                                    if(isset($_GET["po"])){
-                                        $filtern = "po"; 
-                                    }else if(isset($_GET["tgl"])){      
-                                        $filtern = "tgl"; 
-                                    }else{
-                                        $filtern = ""; 
+                                    <?php
+                                    if (isset($_GET["po"])) {
+                                        $filtern = "po";
+                                    } else if (isset($_GET["tgl"])) {
+                                        $filtern = "tgl";
+                                    } else {
+                                        $filtern = "";
                                     }
                                     ?>
                                     <div class="col-9">
                                         <select id="filtern" onchange="pilihfilter()" class="form-control">
-                                            <option value="tgl" <?=($filtern=="tgl")?"selected":"";?>>Tgl Export</option>
-                                            <option value="po" <?=($filtern=="po")?"selected":"";?>>PO Number</option>
+                                            <option value="tgl" <?= ($filtern == "tgl") ? "selected" : ""; ?>>Tgl Export</option>
+                                            <option value="po" <?= ($filtern == "po") ? "selected" : ""; ?>>PO Number</option>
                                         </select>
                                     </div>
                                 </div>
@@ -303,7 +308,7 @@
                                     }
                                     if (isset($_GET["dari"]) && isset($_GET["ke"])) {
                                         $build->where("target_date >=", $dari)
-                                        ->where("target_date <=", $ke);
+                                            ->where("target_date <=", $ke);
                                     }
                                     $usr = $build->orderBy("target_date DESC")
                                         ->get();
