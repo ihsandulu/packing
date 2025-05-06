@@ -15,7 +15,7 @@
                             <h4 class="card-title"></h4>
                         </div>
                         <div class="col-2 ">
-                            <a href="<?= base_url("apk/100.apk"); ?>" class="btn btn-success btn-xs btn-block float-right">
+                            <a href="<?= base_url("apk/101.apk"); ?>" class="btn btn-success btn-xs btn-block float-right">
                                 <i class="fa fa-download"></i> Download APK
                             </a>
                         </div>
