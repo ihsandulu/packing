@@ -101,22 +101,28 @@ class api extends BaseController
         $target_upc = $this->request->getGET("target_upc");
         if (!empty($target_upc)) {
             $query = $this->db
-            ->table("target")
-            ->join("size", "size.size_id=target.size_id", "left")
-            ->where("target_upc", $target_upc)
-            ->get(); // pastikan nama tabel "target"
+                ->table("target")
+                ->join("size", "size.size_id=target.size_id", "left")
+                ->where("target_upc", $target_upc)
+                ->get(); // pastikan nama tabel "target"
             $target_scan = 0;
 
             if ($query->getNumRows() > 0) {
                 $result = $query->getRow(); // hanya ambil satu baris (karena UPC biasanya unik)
+                $ctns = $result->target_ctns;
                 $target_scan = $result->target_scan + 1;
-                $input["target_scan"] = $target_scan;
+                if ($target_scan >= $ctns) {
+                    $status = "-1";
+                    $message = "Warning! Melebihi CTNS!";
+                } else {
+                    $input["target_scan"] = $target_scan;
 
-                // Simpan data
-                $this->db->table("target")->where("target_upc", $target_upc)->update($input);
+                    // Simpan data
+                    $this->db->table("target")->where("target_upc", $target_upc)->update($input);
 
-                $status = "Success";
-                $message = "Barcode Found!";
+                    $status = "Success";
+                    $message = "Barcode Found!";
+                }
                 $target = $query->getResultArray(); // Ambil semua data yang ditemukan
             }
         }
