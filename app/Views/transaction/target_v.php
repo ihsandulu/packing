@@ -400,6 +400,7 @@
                                                 </td>
                                                 <td class="">
                                                     <div class="inputn inputn<?= $usr->target_id; ?>">
+                                                        <input type="text" class="form-control inputn inputn<?= $usr->target_id; ?>" id="target_scan<?= $usr->target_id; ?>" name="target_scan" placeholder="Scanned" value="<?= $usr->target_scan; ?>">
                                                         <input type="hidden" name="target_id" value="<?= $usr->target_id; ?>" />
                                                         <button type="submit" id="submit" class="btn btn-success btn-block" name="change" value="OK">Save</button>
                                                     </div>
