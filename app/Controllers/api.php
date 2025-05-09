@@ -106,7 +106,7 @@ class api extends BaseController
                 ->join("size", "size.size_id=target.size_id", "left")
                 ->where("target_upc", $target_upc)
                 ->where("target_po", $target_po)
-                ->get(); // pastikan nama tabel "target"
+                ->get(); 
             $target_scan = 0;
 
             if ($query->getNumRows() > 0) {
@@ -120,7 +120,9 @@ class api extends BaseController
                     $input["target_scan"] = $target_scan;
 
                     // Simpan data
-                    $this->db->table("target")->where("target_upc", $target_upc)->update($input);
+                    $where["target_upc"]=$target_upc;
+                    $where["target_po"]=$target_po;
+                    $this->db->table("target")->where($where)->update($input);
 
                     $status = "Success";
                     $message = "Barcode Found!";
