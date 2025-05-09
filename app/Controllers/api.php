@@ -99,11 +99,13 @@ class api extends BaseController
         $target = null; // Default null
 
         $target_upc = $this->request->getGET("target_upc");
+        $target_po = $this->request->getGET("target_po");
         if (!empty($target_upc)) {
             $query = $this->db
                 ->table("target")
                 ->join("size", "size.size_id=target.size_id", "left")
                 ->where("target_upc", $target_upc)
+                ->where("target_po", $target_po)
                 ->get(); // pastikan nama tabel "target"
             $target_scan = 0;
 
