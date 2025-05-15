@@ -128,6 +128,10 @@ class api extends BaseController
                     $message = "Barcode Found!";
                 }
                 $target = $query->getResultArray(); // Ambil semua data yang ditemukan
+            }else{
+                
+                    $status = "-1";
+                    $message = "Warning! UPC ".$target_upc." tidak ditemukan di PO ".$target_po;
             }
         }
 
