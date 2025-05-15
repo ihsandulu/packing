@@ -94,7 +94,7 @@ class api extends BaseController
         header('Access-Control-Allow-Headers: Content-Type');
 
         $input = [];
-        $status = "Failed";
+        $status = "danger";
         $message = "Barcode Not Found!";
         $target = null; // Default null
 
@@ -114,7 +114,7 @@ class api extends BaseController
                 $ctns = $result->target_ctns;
                 $target_scan = $result->target_scan + 1;
                 if ($target_scan > $ctns) {
-                    $status = "-1";
+                    $status = "danger";
                     $message = "Warning! Melebihi CTNS!";
                 } else {
                     $input["target_scan"] = $target_scan;
@@ -124,13 +124,13 @@ class api extends BaseController
                     $where["target_po"]=$target_po;
                     $this->db->table("target")->where($where)->update($input);
 
-                    $status = "Success";
+                    $status = "success";
                     $message = "Barcode Found!";
                 }
                 $target = $query->getResultArray(); // Ambil semua data yang ditemukan
             }else{
                 
-                    $status = "-1";
+                    $status = "danger";
                     $message = "Warning! UPC ".$target_upc." tidak ditemukan di PO ".$target_po;
             }
         }
